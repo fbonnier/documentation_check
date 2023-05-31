@@ -64,7 +64,10 @@ def evaluate_comments (source_folder_path, report_block):
        if iblock["log"]: report_block["log"].append (iblock["log"])
 
     # Compute global ratio comments/code lines
-    report_block["ratio comments"] = sum(iblock["score"] for iblock in blocks)/len(blocks)
+    try:
+       report_block["ratio comments"] = sum(iblock["score"] for iblock in blocks)/len(blocks)
+    except Exception as e:
+       report_block["errors"].append(e)
     
     return report_block
     

@@ -67,7 +67,7 @@ def evaluate_comments (source_folder_path, report_block):
     try:
        report_block["ratio comments"] = sum(iblock["score"] for iblock in blocks)/len(blocks)
     except Exception as e:
-       report_block["errors"].append(e)
+       report_block["errors"].append(str(e))
     
     return report_block
     

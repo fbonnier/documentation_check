@@ -27,31 +27,35 @@ def evaluate_comments_1_file (source_file_path):
     log = []
     ncomments = 0
     n_empty_lines = 0
-    with open(source_file_path) as f:
-      # Count number of lines
-      for iline in f.readlines():
-        # Count number of not empty lines
-        nlines += 1 if iline.split() else 0
-        # Count number of empty lines
-        n_empty_lines += 1 if not iline.split() else 0
+    try:
+      with open(source_file_path) as f:
+        # Count number of lines
+        for iline in f.readlines():
+          # Count number of not empty lines
+          nlines += 1 if iline.split() else 0
+          # Count number of empty lines
+          n_empty_lines += 1 if not iline.split() else 0
+    except Exception as e:
+       errors.append(str(e))
+    
     
     try:
       ncomments = len(comment_parser.extract_comments(source_file_path))
       # Count number of not empty code lines
       nlines -= ncomments
       score = ncomments*100./nlines
-      log.append (source_file_path.basename + ": n empty lines = " + str(n_empty_lines))
+      log.append (source_file_path + ": n empty lines = " + str(n_empty_lines))
     except Exception as e:
-       errors.append(e)
+       errors.append(str(e))
 
-    return {"score": score, "nlines": nlines, "ncomments": ncomments, "errors": errors, "log": log}
+    return {"filename": source_file_path,"score": score, "nlines": nlines, "ncomments": ncomments, "errors": errors, "log": log}
 
 
 def evaluate_comments (source_folder_path, report_block):
     blocks = []
     for root, dirs, files in os.walk(repo_path):
         for file in files:
-            blocks.append(evaluate_comments_1_file (file))
+            blocks.append(evaluate_comments_1_file (root + '/' + file))
     report_block["files"] = blocks
     report_block["nlines"] = sum(iblock["nlines"] for iblock in blocks)
     report_block["ncomments"] = sum(iblock["ncomments"] for iblock in blocks)

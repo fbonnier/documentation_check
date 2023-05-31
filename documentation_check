@@ -2,9 +2,10 @@
 
 JSON=""
 JSON_OUT="documentation_report.json"
+CODE_REPO="./code/"
 
 
-RUN_INSTR="python3 $( dirname -- "$0"; )/main.py --out $JSON_OUT"
+RUN_INSTR="python3 $( dirname -- "$0"; )/main.py --out $JSON_OUT --repository $CODE_REPO"
 RUN_INSTR_ORIGIN=$RUN_INSTR 
 
 NARGS=$(($#-1))

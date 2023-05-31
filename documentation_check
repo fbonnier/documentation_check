@@ -1,11 +1,12 @@
 #!/bin/bash
 
 JSON=""
-JSON_OUT="documentation_report.json"
-CODE_REPO="./code/"
+JSON_OUT=""
+CODE_REPO=""
 
 
-RUN_INSTR="python3 $( dirname -- "$0"; )/main.py --out $JSON_OUT --repository $CODE_REPO"
+# RUN_INSTR="python3 $( dirname -- "$0"; )/main.py --out $JSON_OUT --repository $CODE_REPO"
+RUN_INSTR="python3 $( dirname -- "$0"; )/main.py"
 RUN_INSTR_ORIGIN=$RUN_INSTR 
 
 NARGS=$(($#-1))
@@ -18,9 +19,13 @@ for (( iarg=1; iarg<=NARGS; iarg++)); do
         JSON=${!jarg}
         RUN_INSTR="$RUN_INSTR --json $JSON"
 
-    # elif [ ${!iarg} == "--out" ]; then
-    #     JSON_OUT=${!jarg}
-    #     RUN_INSTR="$RUN_INSTR --out $JSON_OUT"
+    elif [ ${!iarg} == "--out" ]; then
+        JSON_OUT=${!jarg}
+        RUN_INSTR="$RUN_INSTR --out $JSON_OUT"
+
+    elif [ ${!iarg} == "--repository" ]; then
+        CODE_REPO=${!jarg}
+        RUN_INSTR="$RUN_INSTR --repository $CODE_REPO"
     fi
 done
 

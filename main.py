@@ -85,8 +85,8 @@ if __name__ == "__main__":
 
   args = parser.parse_args()
   repo_path = str(args.repo[0])
-  jsonfile = args.json[0] if args.json else None
-  jsonfile_out = args.out[0] if args.out else None
+  jsonfile = args.json[0].name if args.json else None
+  jsonfile_out = args.out[0].name if args.out else None
   json_data = None
   with open(jsonfile, "r") as f:
         json_data = json.load (f)

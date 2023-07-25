@@ -99,34 +99,36 @@ if __name__ == "__main__":
         json_data = json.load (f)
 
   report_data = {"score": 0.,
-                  "readme": False,
-                  "nlines": 0,
-                  "ncomments": 0,
-                  "ratio comments": 0.,
-                  "files": [],
-                  "paper": False,
-                  "homepage": False,
+                 "report": {
+                    "readme": False,
+                     "nlines": 0,
+                     "ncomments": 0,
+                     "ratio comments": 0.,
+                     "files": [],
+                     "paper": False,
+                     "homepage": False},
                   "errors": [],
-                  "log": []}
+                  "log": [],
+                  "advice": []}
 
 
   # search README
-  report_data["readme"] = has_readme(repo_path)
+  report_data["report"]["readme"] = has_readme(repo_path)
 
   # search Homepage
-  report_data["homepage"] = has_homepage(json_data)
+  report_data["report"]["homepage"] = has_homepage(json_data)
  
   # seach paper
-  report_data["paper"] = has_paper(json_data)
+  report_data["report"]["paper"] = has_paper(json_data)
    
   # Analyze comments in source files
   report_data = evaluate_comments (repo_path, report_data)
 
   # Compute main score, mean score
-  report_data["score"] = ((100. if report_data["readme"] else 0.)
-                          + (100. if report_data["homepage"] else 0.)
-                          + (100. if report_data["paper"] else 0.)
-                          + report_data["ratio comments"]) / 4
+  report_data["score"] = ((100. if report_data["report"]["readme"] else 0.)
+                          + (100. if report_data["report"]["homepage"] else 0.)
+                          + (100. if report_data["report"]["paper"] else 0.)
+                          + report_data["report"]["ratio comments"]) / 4
 
   # Write data in JSON file
   with open(jsonfile_out, "w") as f:    

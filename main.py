@@ -56,16 +56,16 @@ def evaluate_comments (source_folder_path, report_block):
     for root, dirs, files in os.walk(repo_path):
         for file in files:
             blocks.append(evaluate_comments_1_file (root + '/' + file))
-    report_block["files"] = blocks
-    report_block["nlines"] = sum(iblock["nlines"] for iblock in blocks)
-    report_block["ncomments"] = sum(iblock["ncomments"] for iblock in blocks)
+    report_block["report"]["files"] = blocks
+    report_block["report"]["nlines"] = sum(iblock["nlines"] for iblock in blocks)
+    report_block["report"]["ncomments"] = sum(iblock["ncomments"] for iblock in blocks)
     for iblock in blocks:
-       if iblock["errors"]: report_block["errors"].append (iblock["errors"])
-       if iblock["log"]: report_block["log"].append (iblock["log"])
+       if iblock["errors"]: report_block["errors"] += iblock["errors"]
+       if iblock["log"]: report_block["log"] += iblock["log"]
 
     # Compute global ratio comments/code lines
     try:
-       report_block["ratio comments"] = sum(iblock["score"] for iblock in blocks)/len(blocks)
+       report_block["report"]["ratio comments"] = sum(iblock["score"] for iblock in blocks)/len(blocks)
     except Exception as e:
        report_block["errors"].append(str(e))
     

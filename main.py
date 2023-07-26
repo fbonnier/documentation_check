@@ -48,7 +48,7 @@ def evaluate_comments_1_file (source_file_path):
     except Exception as e:
        errors.append(str(e))
 
-    return {"filename": source_file_path,"score": score, "nlines": nlines, "ncomments": ncomments, "errors": errors, "log": log}
+    return {"filename": source_file_path,"score": score, "nlines": nlines, "ncomments": ncomments, "error": errors, "log": log}
 
 
 def evaluate_comments (source_folder_path, report_block):
@@ -60,14 +60,14 @@ def evaluate_comments (source_folder_path, report_block):
     report_block["report"]["nlines"] = sum(iblock["nlines"] for iblock in blocks)
     report_block["report"]["ncomments"] = sum(iblock["ncomments"] for iblock in blocks)
     for iblock in blocks:
-       if iblock["errors"]: report_block["errors"] += iblock["errors"]
+       if iblock["error"]: report_block["error"] += iblock["error"]
        if iblock["log"]: report_block["log"] += iblock["log"]
 
     # Compute global ratio comments/code lines
     try:
        report_block["report"]["ratio comments"] = sum(iblock["score"] for iblock in blocks)/len(blocks)
     except Exception as e:
-       report_block["errors"].append(str(e))
+       report_block["error"].append(str(e))
     
     return report_block
     
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                      "files": [],
                      "paper": False,
                      "homepage": False},
-                  "errors": [],
+                  "error": [],
                   "log": [],
                   "advice": []}
 
